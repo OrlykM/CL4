@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: backend
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=development
+      - MYSQL_HOST=db
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=123qwe123
+      - MYSQL_DATABASE=ads
+    depends_on:
+      - db  
+
+  frontend:
+    build:
+      context: ./frontend/CL2
+    container_name: frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+  db:  
+    image: mysql:latest
+    container_name: mysql_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 123qwe123  
+      MYSQL_DATABASE: ads                
+      MYSQL_USER: admin                  
+      MYSQL_PASSWORD: 123qwe123          
+    ports:
+      - "3307:3306"                      
+    volumes:
+      - db_data:/var/lib/mysql           
+volumes:
+  db_data:  
